@@ -270,6 +270,10 @@
         "named": true
       },
       {
+        "type": "boolean_type",
+        "named": true
+      },
+      {
         "type": "function_declarator",
         "named": true
       },
@@ -296,6 +300,10 @@
     "named": true,
     "subtypes": [
       {
+        "type": "boolean_type",
+        "named": true
+      },
+      {
         "type": "enum_specifier",
         "named": true
       },
@@ -321,6 +329,10 @@
       },
       {
         "type": "union_specifier",
+        "named": true
+      },
+      {
+        "type": "void_type",
         "named": true
       }
     ]
@@ -396,15 +408,11 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
           "type": "_abstract_declarator",
-          "named": true
-        },
-        {
-          "type": "ms_call_modifier",
           "named": true
         }
       ]
@@ -429,10 +437,6 @@
       "multiple": true,
       "required": false,
       "types": [
-        {
-          "type": "ms_pointer_modifier",
-          "named": true
-        },
         {
           "type": "type_qualifier",
           "named": true
@@ -1193,10 +1197,6 @@
           {
             "type": "_expression",
             "named": true
-          },
-          {
-            "type": "comma_expression",
-            "named": true
           }
         ]
       }
@@ -1216,15 +1216,7 @@
         "required": true,
         "types": [
           {
-            "type": "array_declarator",
-            "named": true
-          },
-          {
-            "type": "attributed_declarator",
-            "named": true
-          },
-          {
-            "type": "function_declarator",
+            "type": "_declarator",
             "named": true
           },
           {
@@ -1232,23 +1224,7 @@
             "named": true
           },
           {
-            "type": "identifier",
-            "named": true
-          },
-          {
             "type": "init_declarator",
-            "named": true
-          },
-          {
-            "type": "ms_call_modifier",
-            "named": true
-          },
-          {
-            "type": "parenthesized_declarator",
-            "named": true
-          },
-          {
-            "type": "pointer_declarator",
             "named": true
           }
         ]
@@ -1759,15 +1735,7 @@
           "named": true
         },
         {
-          "type": "call_expression",
-          "named": true
-        },
-        {
           "type": "gnu_asm_expression",
-          "named": true
-        },
-        {
-          "type": "identifier",
           "named": true
         }
       ]
@@ -1870,10 +1838,6 @@
         "multiple": true,
         "required": false,
         "types": [
-          {
-            "type": "concatenated_string",
-            "named": true
-          },
           {
             "type": "string_literal",
             "named": true
@@ -2492,7 +2456,7 @@
     "named": true,
     "fields": {},
     "children": {
-      "multiple": true,
+      "multiple": false,
       "required": true,
       "types": [
         {
@@ -2505,10 +2469,6 @@
         },
         {
           "type": "_type_declarator",
-          "named": true
-        },
-        {
-          "type": "ms_call_modifier",
           "named": true
         }
       ]
@@ -3354,6 +3314,10 @@
         "multiple": false,
         "required": false,
         "types": [
+          {
+            "type": "complex_type",
+            "named": true
+          },
           {
             "type": "primitive_type",
             "named": true
@@ -4257,6 +4221,10 @@
     "named": false
   },
   {
+    "type": "boolean_type",
+    "named": true
+  },
+  {
     "type": "break",
     "named": false
   },
@@ -4270,6 +4238,10 @@
   },
   {
     "type": "comment",
+    "named": true
+  },
+  {
+    "type": "complex_type",
     "named": true
   },
   {
@@ -4297,6 +4269,10 @@
     "named": false
   },
   {
+    "type": "double",
+    "named": false
+  },
+  {
     "type": "else",
     "named": false
   },
@@ -4319,6 +4295,10 @@
   {
     "type": "field_identifier",
     "named": true
+  },
+  {
+    "type": "float",
+    "named": false
   },
   {
     "type": "for",
@@ -4471,6 +4451,10 @@
   {
     "type": "unsigned",
     "named": false
+  },
+  {
+    "type": "void_type",
+    "named": true
   },
   {
     "type": "volatile",

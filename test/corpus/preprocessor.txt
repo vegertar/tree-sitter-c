@@ -157,7 +157,7 @@ int b;
   (preproc_ifdef
     name: (identifier)
     (declaration
-      type: (primitive_type)
+      type: (type_identifier)
       declarator: (identifier))
     (preproc_def
       name: (identifier)
@@ -213,12 +213,12 @@ int b;
   (preproc_ifdef
     (identifier)
     (declaration
-      (primitive_type)
+      (type_identifier)
       (identifier))
     (preproc_elifdef
       (identifier)
       (declaration
-        (primitive_type)
+        (type_identifier)
         (identifier))
       (preproc_else
         (declaration
@@ -353,7 +353,7 @@ struct S {
           (field_identifier))
         (preproc_else
           (field_declaration
-            (primitive_type)
+            (type_identifier)
             (field_identifier)))))))
 
 ================================================================================
@@ -397,5 +397,5 @@ uint32_t a;
           (argument_list
             (identifier)))))
     (declaration
-      (primitive_type)
+      (type_identifier)
       (identifier))))

@@ -27,7 +27,7 @@ int main() {
             (identifier)))
         (parameter_list
           (parameter_declaration
-            (primitive_type))))))
+            (void_type))))))
   (declaration
     (primitive_type)
     (array_declarator

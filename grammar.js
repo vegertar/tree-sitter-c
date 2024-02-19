@@ -67,7 +67,6 @@ module.exports = grammar({
     [$.enum_specifier],
     [$._type_specifier, $._old_style_parameter_list],
     [$.parameter_list, $._old_style_parameter_list],
-    [$.function_declarator, $._function_declaration_declarator],
   ],
 
   word: $ => $.identifier,
@@ -231,7 +230,6 @@ module.exports = grammar({
     function_definition: $ => seq(
       optional($.ms_call_modifier),
       $._declaration_specifiers,
-      optional($.ms_call_modifier),
       field('declarator', $._declarator),
       field('body', $.compound_statement),
     ),
@@ -246,16 +244,13 @@ module.exports = grammar({
 
     declaration: $ => seq(
       $._declaration_specifiers,
-      commaSep1(field('declarator', choice(
-        seq(
-          optional($.ms_call_modifier),
-          $._declaration_declarator,
-          optional($.gnu_asm_expression),
-        ),
-        $.init_declarator,
-      ))),
+      $._declaration_declarator,
       ';',
     ),
+    _declaration_declarator: $ => commaSep1(field('declarator', choice(
+      seq($._declarator, optional($.gnu_asm_expression)),
+      $.init_declarator,
+    ))),
 
     type_definition: $ => seq(
       optional('__extension__'),
@@ -362,15 +357,6 @@ module.exports = grammar({
       $.identifier,
     ),
 
-    _declaration_declarator: $ => choice(
-      $.attributed_declarator,
-      $.pointer_declarator,
-      alias($._function_declaration_declarator, $.function_declarator),
-      $.array_declarator,
-      $.parenthesized_declarator,
-      $.identifier,
-    ),
-
     _field_declarator: $ => choice(
       alias($.attributed_field_declarator, $.attributed_declarator),
       alias($.pointer_field_declarator, $.pointer_declarator),
@@ -389,6 +375,7 @@ module.exports = grammar({
       $._type_identifier,
       alias(choice('signed', 'unsigned', 'long', 'short'), $.primitive_type),
       $.primitive_type,
+      $.boolean_type,
     ),
 
     _abstract_declarator: $ => choice(
@@ -400,25 +387,21 @@ module.exports = grammar({
 
     parenthesized_declarator: $ => prec.dynamic(PREC.PAREN_DECLARATOR, seq(
       '(',
-      optional($.ms_call_modifier),
       $._declarator,
       ')',
     )),
     parenthesized_field_declarator: $ => prec.dynamic(PREC.PAREN_DECLARATOR, seq(
       '(',
-      optional($.ms_call_modifier),
       $._field_declarator,
       ')',
     )),
     parenthesized_type_declarator: $ => prec.dynamic(PREC.PAREN_DECLARATOR, seq(
       '(',
-      optional($.ms_call_modifier),
       $._type_declarator,
       ')',
     )),
     abstract_parenthesized_declarator: $ => prec(1, seq(
       '(',
-      optional($.ms_call_modifier),
       $._abstract_declarator,
       ')',
     )),
@@ -459,7 +442,6 @@ module.exports = grammar({
       field('declarator', $._type_declarator),
     ))),
     abstract_pointer_declarator: $ => prec.dynamic(1, prec.right(seq('*',
-      repeat($.ms_pointer_modifier),
       repeat($.type_qualifier),
       field('declarator', optional($._abstract_declarator)),
     ))),
@@ -469,22 +451,8 @@ module.exports = grammar({
         field('declarator', $._declarator),
         field('parameters', $.parameter_list),
         optional($.gnu_asm_expression),
-        repeat(choice(
-          $.attribute_specifier,
-          $.identifier,
-          alias($.preproc_call_expression, $.call_expression),
-        )),
-      ),
-    ),
-
-    _function_declaration_declarator: $ => prec.right(1,
-      seq(
-        field('declarator', $._declarator),
-        field('parameters', $.parameter_list),
-        optional($.gnu_asm_expression),
         repeat($.attribute_specifier),
       )),
-
     function_field_declarator: $ => prec(1, seq(
       field('declarator', $._field_declarator),
       field('parameters', $.parameter_list),
@@ -575,13 +543,48 @@ module.exports = grammar({
       $.enum_specifier,
       $.macro_type_specifier,
       $.sized_type_specifier,
+      $.boolean_type,
       $.primitive_type,
+      $.void_type,
       $._type_identifier,
     ),
 
     sized_type_specifier: $ => choice(
       seq(
         repeat(choice(
+          'long',
+          'float',
+          'double',
+        )),
+        field('type', optional(choice(
+          prec.dynamic(-1, $._type_identifier),
+          $.complex_type,
+        ))),
+        repeat1(choice(
+          'long',
+          'float',
+          'double',
+        )),
+      ),
+      seq(
+        repeat1(choice(
+          'long',
+          'float',
+          'double',
+        )),
+        field('type', optional(choice(
+          prec.dynamic(-1, $._type_identifier),
+          $.complex_type,
+        ))),
+        repeat(choice(
+          'long',
+          'float',
+          'double',
+        )),
+      ),
+
+      seq(
+        repeat(choice(
           'signed',
           'unsigned',
           'long',
@@ -618,24 +621,23 @@ module.exports = grammar({
       ),
     ),
 
-    primitive_type: _ => token(choice(
+    void_type: _ => token('void'),
+
+    boolean_type: _ => token(choice(
       'bool',
+      '_Bool',
+    )),
+
+    complex_type: _ => token(choice(
+      'complex',
+      'imaginary',
+      '_Complex',
+      '_Imaginary',
+    )),
+
+    primitive_type: _ => token(choice(
       'char',
       'int',
-      'float',
-      'double',
-      'void',
-      'size_t',
-      'ssize_t',
-      'ptrdiff_t',
-      'intptr_t',
-      'uintptr_t',
-      'charptr_t',
-      'nullptr_t',
-      'max_align_t',
-      ...[8, 16, 32, 64].map(n => `int${n}_t`),
-      ...[8, 16, 32, 64].map(n => `uint${n}_t`),
-      ...[8, 16, 32, 64].map(n => `char${n}_t`),
     )),
 
     enum_specifier: $ => seq(
@@ -944,19 +946,15 @@ module.exports = grammar({
       $.compound_literal_expression,
       $.identifier,
       $.number_literal,
-      $._string,
+      $.string_literal,
       $.true,
       $.false,
       $.null,
+      $.concatenated_string,
       $.char_literal,
       $.parenthesized_expression,
       $.gnu_asm_expression,
     ),
-
-    _string: $ => prec.left(choice(
-      $.string_literal,
-      $.concatenated_string,
-    )),
 
     comma_expression: $ => seq(
       field('left', $._expression),
@@ -967,7 +965,7 @@ module.exports = grammar({
     conditional_expression: $ => prec.right(PREC.CONDITIONAL, seq(
       field('condition', $._expression),
       '?',
-      optional(field('consequence', choice($._expression, $.comma_expression))),
+      optional(field('consequence', $._expression)),
       ':',
       field('alternative', $._expression),
     )),
@@ -1107,7 +1105,7 @@ module.exports = grammar({
       choice('asm', '__asm__'),
       repeat($.gnu_asm_qualifier),
       '(',
-      field('assembly_code', $._string),
+      field('assembly_code', choice($.string_literal, $.concatenated_string)),
       optional(seq(
         field('output_operands', $.gnu_asm_output_operand_list),
         optional(seq(
@@ -1163,7 +1161,7 @@ module.exports = grammar({
 
     gnu_asm_clobber_list: $ => seq(
       ':',
-      commaSep(field('register', $._string)),
+      commaSep(field('register', $.string_literal)),
     ),
 
     gnu_asm_goto_list: $ => seq(
@@ -1269,15 +1267,10 @@ module.exports = grammar({
       '\'',
     ),
 
-    // Must concatenate at least 2 nodes, one of which must be a string_literal.
-    // Identifier is added to parse macros that are strings, like PRIu64.
     concatenated_string: $ => prec.right(seq(
-      choice(
-        seq($.identifier, $.string_literal),
-        seq($.string_literal, $.string_literal),
-        seq($.string_literal, $.identifier),
-      ),
-      repeat(choice($.string_literal, $.identifier)),
+      choice($.identifier, $.string_literal),
+      $.string_literal,
+      repeat(choice($.string_literal, $.identifier)), // Identifier is added to parse macros that are strings, like PRIu64
     )),
 
     string_literal: $ => seq(

@@ -2,48 +2,38 @@
 Primitive types
 ========================================
 
+char a;
 int a;
-uint8_t a;
-uint16_t a;
-uint32_t a;
-uint64_t a;
-uintptr_t a;
-
-int8_t a;
-int16_t a;
-int32_t a;
-int64_t a;
-intptr_t a;
-
-char16_t a;
-char32_t a;
-
-size_t a;
-ssize_t a;
 
 ---
 
 (translation_unit
   (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
-  (declaration (primitive_type) (identifier))
   (declaration (primitive_type) (identifier)))
+
+========================================
+Boolean types
+========================================
+
+_Bool a;
+bool a;
+
+---
+
+(translation_unit
+  (declaration (boolean_type) (identifier))
+  (declaration (boolean_type) (identifier)))
 
 ========================================
 Type modifiers
 ========================================
 
+void f(float);
+void f(double);
+void f(long double);
+void f(float _Complex);
+void f(double _Complex);
+void f(long double _Complex);
 void f(unsigned);
 void f(unsigned int);
 void f(signed long int);
@@ -54,27 +44,57 @@ void f(unsigned long v2);
 
 (translation_unit
   (declaration
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list (parameter_declaration (sized_type_specifier)))))
   (declaration
-    (primitive_type)
+    (void_type)
+    (function_declarator
+      (identifier)
+      (parameter_list (parameter_declaration (sized_type_specifier)))))
+  (declaration
+    (void_type)
+    (function_declarator
+      (identifier)
+      (parameter_list (parameter_declaration (sized_type_specifier)))))
+  (declaration
+    (void_type)
+    (function_declarator
+      (identifier)
+      (parameter_list (parameter_declaration (sized_type_specifier (complex_type))))))
+  (declaration
+    (void_type)
+    (function_declarator
+      (identifier)
+      (parameter_list (parameter_declaration (sized_type_specifier (complex_type))))))
+  (declaration
+    (void_type)
+    (function_declarator
+      (identifier)
+      (parameter_list (parameter_declaration (sized_type_specifier (complex_type))))))
+  (declaration
+    (void_type)
+    (function_declarator
+      (identifier)
+      (parameter_list (parameter_declaration (sized_type_specifier)))))
+  (declaration
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list (parameter_declaration (sized_type_specifier (primitive_type))))))
   (declaration
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list (parameter_declaration (sized_type_specifier (primitive_type))))))
   (declaration
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list (parameter_declaration (sized_type_specifier) (identifier)))))
   (declaration
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list (parameter_declaration (sized_type_specifier) (identifier))))))

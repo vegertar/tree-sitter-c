@@ -179,7 +179,7 @@ recur:
 
 (translation_unit
   (function_definition
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list
@@ -229,7 +229,7 @@ void foo(int a) {
 
 (translation_unit
   (function_definition
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list
@@ -346,7 +346,7 @@ void foo() {
 
 (translation_unit
   (function_definition
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list))
@@ -431,7 +431,7 @@ void f() {
 
 (translation_unit
   (function_definition
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list))

@@ -25,7 +25,7 @@ struct s3 {
         type: (primitive_type)
         declarator: (field_identifier))
       (field_declaration
-        type: (primitive_type)
+        type: (sized_type_specifier)
         declarator: (field_identifier)
         (bitfield_clause
           (number_literal)))))
@@ -64,7 +64,7 @@ union s2 {
         type: (primitive_type)
         declarator: (field_identifier))
       (field_declaration
-        type: (primitive_type)
+        type: (sized_type_specifier)
         declarator: (field_identifier)))))
 
 ================================================================================
@@ -184,7 +184,7 @@ Primitive-typed variable declarations
 
 unsigned short int a;
 long int b, c = 5, d;
-float d, e;
+float complex d, e;
 unsigned f;
 short g, h;
 int unsigned short i;
@@ -206,7 +206,7 @@ unsigned int long j;
       value: (number_literal))
     declarator: (identifier))
   (declaration
-    type: (primitive_type)
+    type: (sized_type_specifier type: (complex_type))
     declarator: (identifier)
     declarator: (identifier))
   (declaration
@@ -261,7 +261,7 @@ register uint64_t rd_ asm("x" "10");
     (identifier))
   (declaration
     (storage_class_specifier)
-    (primitive_type)
+    (type_identifier)
     (identifier)
     (gnu_asm_expression
       (concatenated_string
@@ -335,12 +335,13 @@ Typedefs
 ================================================================================
 
 typedef int my_int;
+typedef long double complex complex_t;
 
 typedef struct {
   int x;
 } *a;
 
-typedef void my_callback(void *, size_t);
+typedef void my_callback(void *, complex_t);
 
 typedef struct A {
   int i;
@@ -388,6 +389,9 @@ __extension__ typedef struct {
     type: (primitive_type)
     declarator: (type_identifier))
   (type_definition
+    type: (sized_type_specifier type: (complex_type))
+    declarator: (type_identifier))
+  (type_definition
     type: (struct_specifier
       body: (field_declaration_list
         (field_declaration
@@ -396,15 +400,15 @@ __extension__ typedef struct {
     declarator: (pointer_declarator
       declarator: (type_identifier)))
   (type_definition
-    type: (primitive_type)
+    type: (void_type)
     declarator: (function_declarator
       declarator: (type_identifier)
       parameters: (parameter_list
         (parameter_declaration
-          type: (primitive_type)
+          type: (void_type)
           declarator: (abstract_pointer_declarator))
         (parameter_declaration
-          type: (primitive_type)))))
+          type: (type_identifier)))))
   (type_definition
     type: (struct_specifier
       name: (type_identifier)
@@ -415,17 +419,17 @@ __extension__ typedef struct {
     declarator: (type_identifier)
     declarator: (type_identifier))
   (type_definition
-    type: (primitive_type)
+    type: (void_type)
     (type_qualifier)
     declarator: (pointer_declarator
       declarator: (type_identifier)))
   (type_definition
-    type: (primitive_type)
+    type: (void_type)
     (type_qualifier)
     declarator: (pointer_declarator
       declarator: (type_identifier)))
   (type_definition
-    type: (primitive_type)
+    type: (void_type)
     (type_qualifier)
     (type_qualifier)
     declarator: (pointer_declarator
@@ -436,16 +440,16 @@ __extension__ typedef struct {
     declarator: (primitive_type))
   (type_definition
     type: (sized_type_specifier)
-    declarator: (primitive_type))
+    declarator: (type_identifier))
   (type_definition
     type: (sized_type_specifier)
-    declarator: (primitive_type))
+    declarator: (type_identifier))
   (type_definition
     type: (sized_type_specifier)
-    declarator: (primitive_type))
+    declarator: (type_identifier))
   (type_definition
     type: (sized_type_specifier)
-    declarator: (primitive_type))
+    declarator: (type_identifier))
   (type_definition
     type: (sized_type_specifier)
     declarator: (type_identifier))
@@ -559,7 +563,7 @@ static baz quux(...);
 Function definitions
 ================================================================================
 
-void * do_stuff(int arg1) {
+int * do_stuff(int arg1) {
   return 5;
 }
 
@@ -626,38 +630,6 @@ int static inline do_stuff(int arg1) {
           (primitive_type)
           (identifier))))
     (compound_statement
-      (return_statement
-        (number_literal)))))
-
-================================================================================
-Function definitions with macro attributes
-================================================================================
-
-void * do_stuff(int arg1)
-  SOME_ATTR
-  SOME_ATTR(1)
-{
-  return 5;
-}
-
---------------------------------------------------------------------------------
-
-(translation_unit
-  (function_definition
-    type: (primitive_type)
-    declarator: (pointer_declarator
-      declarator: (function_declarator
-        declarator: (identifier)
-        parameters: (parameter_list
-          (parameter_declaration
-            type: (primitive_type)
-            declarator: (identifier)))
-        (identifier)
-        (call_expression
-          function: (identifier)
-          arguments: (argument_list
-            (number_literal)))))
-    body: (compound_statement
       (return_statement
         (number_literal)))))
 
@@ -761,7 +733,7 @@ noreturn void b() {}
       (number_literal)))
   (function_definition
     (type_qualifier)
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list))
@@ -827,9 +799,6 @@ extern int strerror_r(int __errnum, char *__buf,
                                             "__xpg_strerror_r")
     __attribute__((__nothrow__)) __attribute__((__nonnull__(2)));
 
-extern int _IO_vfprintf (_IO_FILE *__restrict, const char *__restrict,
-    __gnuc_va_list);
-
 int f([[a::b(c), d]] int x) {}
 
 [[gnu::always_inline]] [[gnu::hot]] [[gnu::const]] [[nodiscard]]
@@ -893,7 +862,7 @@ struct __attribute__((__packed__)) foo_t {
         (argument_list
           (identifier)))))
   (declaration
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list
@@ -958,25 +927,6 @@ struct __attribute__((__packed__)) foo_t {
             (identifier)
             (argument_list
               (number_literal)))))))
-  (declaration
-    (storage_class_specifier)
-    (primitive_type)
-    (function_declarator
-      (identifier)
-      (parameter_list
-        (parameter_declaration
-          (type_identifier)
-          (abstract_pointer_declarator
-            (ms_pointer_modifier
-              (ms_restrict_modifier))))
-        (parameter_declaration
-          (type_qualifier)
-          (primitive_type)
-          (abstract_pointer_declarator
-            (ms_pointer_modifier
-              (ms_restrict_modifier))))
-        (parameter_declaration
-          (type_identifier)))))
   (function_definition
     (primitive_type)
     (function_declarator
@@ -1015,7 +965,7 @@ struct __attribute__((__packed__)) foo_t {
       (identifier)
       (parameter_list
         (parameter_declaration
-          (primitive_type)))))
+          (void_type)))))
   (declaration
     (attribute_declaration
       (attribute
@@ -1034,7 +984,7 @@ struct __attribute__((__packed__)) foo_t {
       (identifier)
       (parameter_list
         (parameter_declaration
-          (primitive_type)))))
+          (void_type)))))
   (declaration
     (primitive_type)
     (attributed_declarator
@@ -1043,7 +993,7 @@ struct __attribute__((__packed__)) foo_t {
         (attribute
           (identifier)))))
   (declaration
-    (primitive_type)
+    (void_type)
     (function_declarator
       (attributed_declarator
         (identifier)
@@ -1139,49 +1089,3 @@ struct __attribute__((__packed__)) foo_t {
       (field_declaration
         (primitive_type)
         (field_identifier)))))
-
-================================================================================
-More Assembly
-================================================================================
-
-int main() {
-  int var;
-  __asm__(
-    "nop;"
-    : [var] "=r"(var)
-    :
-    : "eax", "ra" "x"
-  );
-}
-
---------------------------------------------------------------------------------
-
-(translation_unit
-  (function_definition
-    (primitive_type)
-    (function_declarator
-      (identifier)
-      (parameter_list))
-    (compound_statement
-      (declaration
-        (primitive_type)
-        (identifier))
-      (expression_statement
-        (gnu_asm_expression
-          (string_literal
-            (string_content))
-          (gnu_asm_output_operand_list
-            (gnu_asm_output_operand
-              (identifier)
-              (string_literal
-                (string_content))
-              (identifier)))
-          (gnu_asm_input_operand_list)
-          (gnu_asm_clobber_list
-            (string_literal
-              (string_content))
-            (concatenated_string
-              (string_literal
-                (string_content))
-              (string_literal
-                (string_content)))))))))

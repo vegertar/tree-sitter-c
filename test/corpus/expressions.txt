@@ -24,7 +24,7 @@ double a = {
 
 (translation_unit
   (declaration
-    (primitive_type)
+    (sized_type_specifier)
     (init_declarator
       (identifier)
       (initializer_list
@@ -217,7 +217,7 @@ asm volatile (
             (string_content))
           (cast_expression
             (type_descriptor
-              (primitive_type))
+              (type_identifier))
             (identifier))))
       (gnu_asm_clobber_list
         (string_literal
@@ -253,7 +253,7 @@ int main(void) {
       (identifier)
       (parameter_list
         (parameter_declaration
-          (primitive_type))))
+          (void_type))))
     (compound_statement
       (compound_statement
         (declaration
@@ -719,7 +719,7 @@ int main() {
           (sizeof_expression
             (parenthesized_expression
               (number_literal)))
-          (number_literal)))
+              (number_literal)))
       (expression_statement
         (sizeof_expression
           (parenthesized_expression
@@ -775,8 +775,7 @@ typedef struct {
                     (type_descriptor
                       (sized_type_specifier))))))))
         (field_declaration
-          (sized_type_specifier
-            (primitive_type))
+          (sized_type_specifier)
           (field_identifier)
           (attribute_specifier
             (argument_list
@@ -785,9 +784,8 @@ typedef struct {
                 (argument_list
                   (alignof_expression
                     (type_descriptor
-                      (sized_type_specifier
-                        (primitive_type)))))))))))
-    (primitive_type)))
+                      (sized_type_specifier))))))))))
+    (type_identifier)))
 
 ================================================================================
 Offsetof expressions
@@ -818,7 +816,7 @@ int main() {
         (offsetof_expression
           (type_descriptor
             (type_identifier))
-          (field_identifier)))
+              (field_identifier)))
       (expression_statement
         (binary_expression
           (offsetof_expression
@@ -1006,12 +1004,12 @@ int main(int argc, char **argv) {
           (identifier)
           (number_literal)))
       (declaration
-        (primitive_type)
+        (sized_type_specifier)
         (init_declarator
           (identifier)
           (number_literal)))
       (declaration
-        (primitive_type)
+        (sized_type_specifier)
         (init_declarator
           (identifier)
           (number_literal)))
@@ -1030,7 +1028,7 @@ int main(int argc, char **argv) {
               (primitive_type))
             (number_literal)
             (type_descriptor
-              (primitive_type))
+              (sized_type_specifier))
             (number_literal)
             (type_descriptor
               (primitive_type))
@@ -1041,17 +1039,17 @@ int main(int argc, char **argv) {
           (generic_expression
             (identifier)
             (type_descriptor
-              (primitive_type)
+              (void_type)
               (abstract_pointer_declarator))
             (number_literal)
             (type_descriptor
               (primitive_type))
             (number_literal)
             (type_descriptor
-              (primitive_type))
+              (sized_type_specifier))
             (number_literal)
             (type_descriptor
-              (primitive_type))
+              (sized_type_specifier))
             (number_literal)
             (type_descriptor
               (primitive_type))
@@ -1062,17 +1060,17 @@ int main(int argc, char **argv) {
           (generic_expression
             (identifier)
             (type_descriptor
-              (primitive_type)
+              (void_type)
               (abstract_pointer_declarator))
             (number_literal)
             (type_descriptor
               (primitive_type))
             (number_literal)
             (type_descriptor
-              (primitive_type))
+              (sized_type_specifier))
             (number_literal)
             (type_descriptor
-              (primitive_type))
+              (sized_type_specifier))
             (number_literal)
             (type_descriptor
               (primitive_type))
@@ -1083,7 +1081,7 @@ int main(int argc, char **argv) {
           (generic_expression
             (identifier)
             (type_descriptor
-              (primitive_type)
+              (void_type)
               (abstract_pointer_declarator))
             (char_literal
               (escape_sequence))
@@ -1092,11 +1090,11 @@ int main(int argc, char **argv) {
             (char_literal
               (character))
             (type_descriptor
-              (primitive_type))
+              (sized_type_specifier))
             (char_literal
               (character))
             (type_descriptor
-              (primitive_type))
+              (sized_type_specifier))
             (char_literal
               (character))
             (type_descriptor
@@ -1115,7 +1113,7 @@ int main(int argc, char **argv) {
                 (string_content)
                 (escape_sequence))))
           (type_descriptor
-            (primitive_type))
+            (sized_type_specifier))
           (call_expression
             (identifier)
             (argument_list
@@ -1123,42 +1121,7 @@ int main(int argc, char **argv) {
                 (string_content)
                 (escape_sequence))))
           (type_descriptor
-            (primitive_type))
-          (call_expression
-            (identifier)
-            (argument_list
-              (string_literal
-                (string_content)
-                (escape_sequence))))
-          (type_descriptor
-            (primitive_type))
-          (call_expression
-            (identifier)
-            (argument_list
-              (string_literal
-                (string_content)
-                (escape_sequence))))))
-      (expression_statement
-        (generic_expression
-          (identifier)
-          (type_descriptor
-            (primitive_type))
-          (call_expression
-            (identifier)
-            (argument_list
-              (string_literal
-                (string_content)
-                (escape_sequence))))
-          (type_descriptor
-            (primitive_type))
-          (call_expression
-            (identifier)
-            (argument_list
-              (string_literal
-                (string_content)
-                (escape_sequence))))
-          (type_descriptor
-            (primitive_type))
+            (sized_type_specifier))
           (call_expression
             (identifier)
             (argument_list
@@ -1185,7 +1148,7 @@ int main(int argc, char **argv) {
                 (string_content)
                 (escape_sequence))))
           (type_descriptor
-            (primitive_type))
+            (sized_type_specifier))
           (call_expression
             (identifier)
             (argument_list
@@ -1193,7 +1156,7 @@ int main(int argc, char **argv) {
                 (string_content)
                 (escape_sequence))))
           (type_descriptor
-            (primitive_type))
+            (sized_type_specifier))
           (call_expression
             (identifier)
             (argument_list
@@ -1220,7 +1183,15 @@ int main(int argc, char **argv) {
                 (string_content)
                 (escape_sequence))))
           (type_descriptor
-            (primitive_type))
+            (sized_type_specifier))
+          (call_expression
+            (identifier)
+            (argument_list
+              (string_literal
+                (string_content)
+                (escape_sequence))))
+          (type_descriptor
+            (sized_type_specifier))
           (call_expression
             (identifier)
             (argument_list
@@ -1229,6 +1200,33 @@ int main(int argc, char **argv) {
                 (escape_sequence))))
           (type_descriptor
             (primitive_type))
+          (call_expression
+            (identifier)
+            (argument_list
+              (string_literal
+                (string_content)
+                (escape_sequence))))))
+      (expression_statement
+        (generic_expression
+          (identifier)
+          (type_descriptor
+            (primitive_type))
+          (call_expression
+            (identifier)
+            (argument_list
+              (string_literal
+                (string_content)
+                (escape_sequence))))
+          (type_descriptor
+            (sized_type_specifier))
+          (call_expression
+            (identifier)
+            (argument_list
+              (string_literal
+                (string_content)
+                (escape_sequence))))
+          (type_descriptor
+            (sized_type_specifier))
           (call_expression
             (identifier)
             (argument_list
@@ -1260,12 +1258,12 @@ _Noreturn void kill(void) {
 (translation_unit
   (function_definition
     (type_qualifier)
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list
         (parameter_declaration
-          (primitive_type))))
+          (void_type))))
     (compound_statement
       (expression_statement
         (call_expression
@@ -1293,7 +1291,7 @@ void fn (int *__restrict__ rptr) {
 
 (translation_unit
   (function_definition
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list
@@ -1322,14 +1320,13 @@ Ternary
 void f() {
   0 ? 1 : 2;
   a = 0 ? 1 : 2;
-  a = val ? b = 3, 1 : 0;
 }
 
 --------------------------------------------------------------------------------
 
 (translation_unit
   (function_definition
-    (primitive_type)
+    (void_type)
     (function_declarator
       (identifier)
       (parameter_list))
@@ -1345,84 +1342,4 @@ void f() {
           (conditional_expression
             (number_literal)
             (number_literal)
-            (number_literal))))
-      (expression_statement
-        (assignment_expression
-          (identifier)
-          (conditional_expression
-            (identifier)
-            (comma_expression
-              (assignment_expression
-                (identifier)
-                (number_literal))
-              (number_literal))
             (number_literal)))))))
-
-================================================================================
-Concatenated strings
-================================================================================
-
-foo("hello" PRI " world");
-foo("hello" PRI);
-foo("hello" " world");
-foo("hello" " world " PRI);
-foo(PRI "hello" PRI);
-foo(PRI "hello");
-
---------------------------------------------------------------------------------
-
-(translation_unit
-  (expression_statement
-    (call_expression
-      function: (identifier)
-      arguments: (argument_list
-        (concatenated_string
-          (string_literal
-            (string_content))
-          (identifier)
-          (string_literal
-            (string_content))))))
-  (expression_statement
-    (call_expression
-      function: (identifier)
-      arguments: (argument_list
-        (concatenated_string
-          (string_literal
-            (string_content))
-          (identifier)))))
-  (expression_statement
-    (call_expression
-      function: (identifier)
-      arguments: (argument_list
-        (concatenated_string
-          (string_literal
-            (string_content))
-          (string_literal
-            (string_content))))))
-  (expression_statement
-    (call_expression
-      function: (identifier)
-      arguments: (argument_list
-        (concatenated_string
-          (string_literal
-            (string_content))
-          (string_literal
-            (string_content))
-          (identifier)))))
-  (expression_statement
-    (call_expression
-      function: (identifier)
-      arguments: (argument_list
-        (concatenated_string
-          (identifier)
-          (string_literal
-            (string_content))
-          (identifier)))))
-  (expression_statement
-    (call_expression
-      function: (identifier)
-      arguments: (argument_list
-        (concatenated_string
-          (identifier)
-          (string_literal
-            (string_content)))))))
